@@ -1,0 +1,7 @@
+---
+title: "Sources"
+author: "Aaditya Gupta"
+format: html
+---
+
+The data used to create this project came from [Kaggle](https://www.kaggle.com/datasets/spscientist/students-performance-in-exams?resource=download). The tidyverse, brms, tidybayes, and gtsummary libraries were used in this project to make the graph, model, etc.

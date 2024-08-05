@@ -1,0 +1,49 @@
+---
+title: "Model"
+author: "Aaditya Gupta"
+format: html
+execute: 
+  echo: false
+---
+
+$$ math_i =  \beta_0 + \beta_1 male_i + \beta_2 none_i + \epsilon_i $$
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+# Loads the libraries.
+library(tidyverse)
+library(brms)
+library(tidybayes)
+library(gtsummary)
+
+# Makes a variable for the data and renames the columns.
+original_data <- read_csv("StudentsPerformance.csv", show_col_types = FALSE) |>
+  rename(race = `race/ethnicity`,
+         parent_education_lvl = `parental level of education`,
+         test_prep = `test preparation course`,
+         math = `math score`,
+         reading = `reading score`,
+         writing = `writing score`)
+```
+
+```{r}
+#| label: model
+#| cache: true
+
+# Makes the fitted model.
+fit_model <- brm(data = original_data,
+                 formula = math ~ gender + test_prep,
+                 silent = 2,
+                 refresh = 0,
+                 seed = 9)
+```
+
+```{r}
+#| warning: false
+
+tbl_regression(fit_model, intercept = TRUE)
+```
+

@@ -1,0 +1,60 @@
+---
+title: "Exam Performance Plot"
+execute: 
+  echo: false
+---
+
+Male students usually do better than female students on math exams. The data used to create this project came from Kaggle. The data for student math exam scores by gender and test preparation was mapped in the form of a slab/ridge graph to show the math exam scores. The outcome variable for this graph was the math exam scores, with some covariates being the gender of the student and their test preparation. Students who were male and completed the test preparation were more likely to score higher than others. On average, male students do 8% better than female students, plus or minus 3%.
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+# Loads the libraries.
+library(tidyverse)
+library(brms)
+library(tidybayes)
+library(gtsummary)
+
+# Makes a variable for the data and renames the columns.
+original_data <- read_csv("StudentsPerformance.csv", show_col_types = FALSE) |>
+  rename(race = `race/ethnicity`,
+         parent_education_lvl = `parental level of education`,
+         test_prep = `test preparation course`,
+         math = `math score`,
+         reading = `reading score`,
+         writing = `writing score`)
+```
+
+```{r}
+#| label: model
+#| cache: true
+
+# Makes the fitted model.
+fit_model <- brm(data = original_data,
+                 formula = math ~ gender + test_prep,
+                 silent = 2,
+                 refresh = 0,
+                 seed = 9)
+```
+
+```{r}
+#| label: plot
+
+gender <- c("male", "female")
+test_prep <- c("none", "completed")
+parent_education_lvl <- c("associate's degree", "bachelor's degree", "high school", "master's degree", "some college", "some high school")
+
+ndata <- tibble(expand_grid(gender, test_prep, parent_education_lvl))
+
+fit_model |>
+  add_epred_draws(newdata = ndata) |>
+    ggplot(aes(x = .epred, y = test_prep)) +
+      stat_slab(aes(fill = gender), alpha = 0.5) +
+        labs(title = "Posterior for Math Exam Scores by Gender and Test Preparation",
+             subtitle = "Male students do better than female students on average",
+             x = "Math Exam Score",
+             y = "Test Preparation",
+             fill = "Gender")
+```

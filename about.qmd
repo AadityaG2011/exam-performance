@@ -1,0 +1,9 @@
+---
+title: "About"
+---
+
+I am Aaditya Gupta, the creator of this project. I go to Granite Oaks Middle School in Rocklin, California. My Github account can be found at [https://github.com/AadityaG2011](https://github.com/AadityaG2011). My email address is aadi10may@gmail.com.
+
+This project displays a slab/ridge graph that shows the math exam scores of students by gender and test preparation. The Github repository link is [https://github.com/AadityaG2011/exam-performance](https://github.com/AadityaG2011/exam-performance).
+
+This project was created as a part of [Kane’s Data Science Bootcamp](https://bootcamp.davidkane.info/).
